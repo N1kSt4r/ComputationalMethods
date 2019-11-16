@@ -13,12 +13,10 @@ def next_Runge(I1, I2, k):
 
 def Simpson_integrate(func, a, b, N):
     h = (b - a) / N
-    func_values = list(map(func, np.linspace(a, b, N + 1)))
+    func_values = func(np.linspace(a, b, N + 1))
     I = func_values[0] + func_values[N]
-    for i in range(2, N, 2):
-        I += 2 * func_values[i]
-    for i in range(1, N, 2):
-        I += 4 * func_values[i]
+    I += np.sum(func_values[2:N:2]) * 2
+    I += np.sum(func_values[1:N:2]) * 4
     return I * h / 3
 
 
@@ -43,9 +41,9 @@ def Simpson_Runge(func, a, b):
 
 def trapeze_integrate(func, a, b, N):
     h = (b - a) / N
-    func_values = list(map(func, np.linspace(a, b, N + 1)))
+    func_values = func(np.linspace(a, b, N + 1))
     I = (func_values[0] + func_values[N]) / 2
-    I += sum(func_values[1:-1])
+    I += np.sum(func_values[1:-1])
     return I * h
 
 
